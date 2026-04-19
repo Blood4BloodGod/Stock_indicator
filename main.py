@@ -1,18 +1,47 @@
-#Aim to use kaggle's given data to prject the future price of  using a model
-import numpy as np
+from Data_Loader import fetch_stock_data, add_basic_features, plot_stock
 import pandas as pd
+import seaborn as sns
 import matplotlib.pyplot as plt
-from sklearn.preprocessing import MinMaxScaler
-from Data_Loader import fetch_stock_data, add_basic_features
+
 
 def main():
     print("Starting program...")
 
-    ticker = "AAPL"
-    df = fetch_stock_data(ticker)
-    df = add_basic_features(df)
+    tickers = ["AAPL", "TSLA", "GOOG"]
 
-    print(df.head())
+    all_data = {}
+    returns_df = pd.DataFrame()
+
+    # Load and process data
+    for ticker in tickers:
+        print(f"\nFetching {ticker}...")
+
+        df = fetch_stock_data(ticker)
+        df = add_basic_features(df)
+
+        all_data[ticker] = df
+        returns_df[ticker] = df["daily_return"]
+
+        print(df[["date", "close"]].head())
+
+        # Plot individual stock
+        plot_stock(df, ticker)
+
+    # Clean returns
+    returns_df.dropna(inplace=True)
+
+    # Correlation analysis
+    correlation = returns_df.corr()
+
+    print("\nCorrelation Matrix:")
+    print(correlation)
+
+    # Heatmap
+    plt.figure()
+    sns.heatmap(correlation, annot=True)
+    plt.title("Stock Return Correlation")
+    plt.show()
 
 
-main()
+if __name__ == "__main__":
+    main()
