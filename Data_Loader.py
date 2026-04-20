@@ -3,7 +3,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 
-def fetch_stock_data(ticker: str, start="2020-01-01", end="2024-01-01"):#added default date range for easier testing
+def fetch_stock_data(ticker: str, start="2020-01-01", end="2024-01-01"):#added 
     df = yf.download(ticker, start=start, end=end)
 
     if df.empty:
@@ -24,7 +24,7 @@ def fetch_stock_data(ticker: str, start="2020-01-01", end="2024-01-01"):#added d
     return df
 
 
-def add_basic_features(df):#added copy to avoid modifying original DataFrame
+def add_basic_features(df):#added copy to  modifying original DataFrame
     df = df.copy()
 
     df["daily_return"] = df["close"].pct_change()
@@ -47,4 +47,4 @@ def plot_stock(df, ticker):#added ticker argument for better labeling
     plt.ylabel("Price")
     plt.legend()
 
-    plt.show()
+    plt.show()#display the plot immediately
